@@ -73,7 +73,7 @@ function log() {
   local level_upper="$(echo "${level}" | awk '{print toupper($0)}')"
 
   local message="${2}"
-  local no_exit="${3:-}"
+  local no_exit="${3:-0}"
 
   local -A severity
   severity['DEBUG']=7
@@ -139,7 +139,7 @@ function log() {
     'error'|'crit')
       echo -e "${out}" >&2
       if [ "${debug_level}" -ge 0 ]; then
-        if [[ "${no_exit}" -ne 1 ]]; then
+        if [[ "${no_exit}" -ne 0 ]]; then
           echo -e "\nHere's a shell to debug with. 'exit 0' to continue. Other exit codes will abort - parent shell will terminate."
           bash || exit ${?}
         fi
