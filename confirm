@@ -8,10 +8,6 @@
 ################################################################################
 # Author:   Mark Lucernas <https://github.com/marklcrns>
 # Date:     2020-08-15
-# Credits:
-#   Zsh prompt   = https://superuser.com/a/556006
-#   Bash prompt  = https://stackoverflow.com/a/1885534
-#   Detect shell = https://stackoverflow.com/a/9911082
 ################################################################################
 
 MESSAGE="${1:-Do you wish to continue? (Y/y)}"

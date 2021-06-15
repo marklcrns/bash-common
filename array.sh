@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 
 ################################################################################
+#
 # Bash array manipulation utility functions
 #
 # WARNING: This is not an executable script. This script is meant to be used as
 # a utility by sourcing this script for efficient bash script writing.
 #
-################################# Functions ###################################
+################################################################## Functions ###
 #
 # array_has_element()
 #

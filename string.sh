@@ -21,12 +21,10 @@
 # to_lower()
 # capitalize()
 #
-# Sample usage:
+# Sample usage: Replace "123" from $var by "321"
 #
-# # Replace "123" from $var by "321"
-# var="some string 123"
+# local var="some string 123"
 # replace_first_of "123" "321" var
-# echo $var
 #
 ################################################################################
 # Author:   Mark Lucernas <https://github.com/marklcrns>

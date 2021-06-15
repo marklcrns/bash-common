@@ -1,5 +1,24 @@
 #!/usr/bin/env bash
 
+################################################################################
+#
+# Bash system utility functions
+#
+# WARNING: This is not an executable script. This script is meant to be used as
+# a utility by sourcing this script for efficient bash script writing.
+#
+################################# Functions ###################################
+#
+# is_wsl()
+# set_nameserver()
+# restore_nameserver()
+#
+################################################################################
+# Author:   Mark Lucernas <https://github.com/marklcrns>
+# Date:     2021-05-31
+################################################################################
+
+
 if [ "${0##*/}" == "${BASH_SOURCE[0]##*/}" ]; then
   echo "WARNING: $(realpath -s $0) is not meant to be executed directly!" >&2;
   echo "Use this script only by sourcing it." >&2;

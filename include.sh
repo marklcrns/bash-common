@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 ################################################################################
+#
 # Defines include function that source script module if existing
 #
 # WARNING: This is not an executable script. This script is meant to be used as

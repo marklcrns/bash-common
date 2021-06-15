@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 ################################################################################
+#
 # Predefined ANSI color codes for colorful output strings.
 #
 # WARNING: This is not an executable script. This script is meant to be used as

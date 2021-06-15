@@ -22,7 +22,7 @@
 #
 ###################################################################### Usage ###
 #
-# log '${log_level}'
+# log 'warn' 'This is a warning message'
 #
 ################################################################################
 # Author:   Mark Lucernas <https://github.com/marklcrns>
