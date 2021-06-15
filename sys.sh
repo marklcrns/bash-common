@@ -38,6 +38,20 @@ is_wsl() {
 }
 
 
+is_darwin() {
+  [[ "$(uname)" == "Darwin" ]] \
+    && return 0 \
+    || return 1
+}
+
+
+is_linux() {
+  [[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]] \
+    && return 0 \
+    || return 1
+}
+
+
 # Set nameserver to $1 after backing up resolve.conf to ~/nameserver.bak
 # Setting nameserver to "8.8.8.8" fixes connection issue when updating apt packages
 set_nameserver() {
