@@ -151,109 +151,21 @@ function log() {
   esac
 }
 
-# # Test DEBUG trap
+############################################################ Test DEBUG trap ###
+
+# Test
+
 # declare prev_cmd="null"
 # declare this_cmd="null"
 # trap 'prev_cmd=$this_cmd; this_cmd=$BASH_COMMAND' DEBUG \
 #   && log 'debug' 'DEBUG trap set' \
 #   || log 'error' 'DEBUG trap failed to set'
 
-# # This is an option if you want to log every single command executed,
-# # but it will significantly impact script performance and unit tests will fail
+# This is an option if you want to log every single command executed,
+# but it will significantly impact script performance and unit tests will fail
+
 # declare prev_cmd="null"
 # declare this_cmd="null"
 # trap 'prev_cmd=$this_cmd; this_cmd=$BASH_COMMAND; log debug $this_cmd' DEBUG \
 #  && log 'debug' 'DEBUG trap set' \
 #  || log 'error' 'DEBUG trap failed to set'
-
-
-
-######################################### BOILERPLATE TO INTEGRATE INTO SCRIPT ###
-
-
-# ################################################## CONSTANT GLOBAL VARIABLES ###
-#
-# LOG_FILE_DIR="${HOME}/log"
-# LOG_FILE="$(date +"%Y-%m-%dT%H:%M:%S")_$(basename -- $0).log"
-#
-# SCRIPTPATH="$(realpath -s $0)"
-# SCRIPTDIR=$(dirname ${SCRIPTPATH})
-#
-# ############################################## EXTERNAL DEPENDENCIES SCRIPTS ###
-#
-# # Ansi color code variables
-# if [[ -e "${SCRIPTDIR}/../../scripting-utils/colors" ]]; then
-#   source "${SCRIPTDIR}/../../scripting-utils/colors"
-# else
-#   echo "${SCRIPTPATH} WARNING: Failed to source '../../scripting-utils/colors' dependency"
-#   echo
-# fi
-# # Utility functions
-# if [[ -e "${SCRIPTDIR}/../../scripting-utils/utils" ]]; then
-#   source "${SCRIPTDIR}/../../scripting-utils/utils"
-# else
-#   echo "${SCRIPTPATH} ERROR: Failed to source '../../scripting-utils/utils' dependency"
-#   exit 1
-# fi
-#
-# ############################################################### FLAG OPTIONS ###
-#
-# # Display help
-# usage() {
-#   cat << EOF
-# USAGE:
-#
-# Command description.
-#
-#   command [ -DsvVy ]
-#
-# OPTIONS:
-#
-#   -D  debug mode (redirect output in log file)
-#   -s  silent output
-#   -v  verbose output
-#   -V  very verbose output
-#   -y  skip confirmation
-#   -h  help
-#
-# EOF
-# }
-#
-# # Set flag options
-# while getopts "DsvVyh" opt; do
-#   case "$opt" in
-#     D) [[ -n "$DEBUG"           ]] && unset DEBUG                      || DEBUG=true;;
-#     s) [[ -n "$IS_SILENT"       ]] && unset IS_SILENT                  || IS_SILENT=true;;
-#     v) [[ -n "$IS_VERBOSE"      ]] && unset IS_VERBOSE                 || IS_VERBOSE=true;;
-#     V) [[ -n "$IS_VERY_VERBOSE" ]] && unset IS_VERBOSE IS_VERY_VERBOSE || IS_VERBOSE=true; IS_VERY_VERBOSE=true;;
-#     y) [[ -n "$SKIP_CONFIRM"    ]] && unset SKIP_CONFIRM               || SKIP_CONFIRM=true;;
-#     h) usage && exit 0;;
-#     *) usage && echo -e "${SCRIPTPATH}:\n${COLOR_RED}ERROR: Invalid flag.${COLOR_NC}"
-#       exit 1
-#   esac
-# done 2>/dev/null
-# shift "$((OPTIND-1))"
-#
-# ####################################################### PRE-EXECUTION SET UP ###
-#
-# # Strip trailing '/' in DIR path variables
-# LOG_FILE_DIR=$(echo ${LOG_FILE_DIR} | sed 's,/*$,,')
-#
-# # Log stdout and stderr to $LOG_FILE in $LOG_FILE_DIR
-# if [[ -n "${DEBUG}" ]]; then
-#   # Append LOG_FILE
-#   LOG_FILE_PATH="${LOG_FILE_DIR}/${LOG_FILE}"
-#   # Create log directory if not existing
-#   if [[ ! -d "${LOG_FILE_DIR}" ]]; then
-#     mkdir -p "${LOG_FILE_DIR}"
-#   fi
-#   # Initialize log file
-#   echo -e "${SCRIPTPATH} log outputs\n" > ${LOG_FILE_PATH}
-# fi
-#
-# ################################################## SCRIPT ARGUMENTS HANDLING ###
-#
-# ##################################################### SCRIPT MAIN EXECUTIONS ###
-#
-# #################################################################### WRAP UP ###
-
