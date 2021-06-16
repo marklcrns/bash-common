@@ -46,7 +46,7 @@ OPTIONS:
 
   -v --verbose   verbose output
   -x --debug     debug
-  -y --skip      confirmation  skip confirmation
+  -y --skip      skip confirmation
   -h --help      show usage
 EOF
 }
