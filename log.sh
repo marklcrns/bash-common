@@ -166,6 +166,7 @@ function log() {
         if [[ "${exit}" -gt 0 ]]; then
           dump_stack
           echo -e "$(realpath -- ${0}): Exited with ${exit}"
+          exit ${exit}
         fi
       fi
       ;;
