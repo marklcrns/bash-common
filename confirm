@@ -10,7 +10,7 @@
 # Date:     2020-08-15
 ################################################################################
 
-MESSAGE="${1:-Do you wish to continue? (Y/y)}"
+MESSAGE="${1:-Do you wish to continue? (Y/y): }"
 
 reply() {
   if [[ "${REPLY}" =~ ^[Yy]$ ]]; then
