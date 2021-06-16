@@ -80,7 +80,7 @@ handle_args_generic() {
         [[ -z "${VERBOSE+x}" ]] && VERBOSE=true
         ;;
       x)
-        [[ -z "${DEBUG+x}" ]]           && DEBUG=false
+        [[ -z "${DEBUG+x}" ]]           && DEBUG=true
         [[ -z "${LOG_DEBUG_LEVEL+x}" ]] && LOG_DEBUG_LEVEL=7
         ;;
       y)
