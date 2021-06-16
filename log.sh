@@ -9,7 +9,7 @@
 #
 ########################################################### Global Variables ###
 #
-# LOG_DEBUG_LEVEL       = Debug level to trigger log level. Default = CRIT.
+# LOG_DEBUG_LEVEL       = Debug level to trigger log level. Default = 7 (CRIT)
 #                         Debug > INFO > NOTICE > WARN > ERROR > CRIT
 #                         ALERT, and EMERG are unused and unhandled.
 # LOG_POP_CALLSTACK     = Pop from callstack in dump_stack(). Pop 2 by default
@@ -162,12 +162,12 @@ function log() {
       ;;
     'error'|'crit')
       echo -e "${out}" >&2
-      if [[ "${debug_level}" -ge 0 ]]; then
-        if [[ "${exit}" -gt 0 ]]; then
+      if [[ "${debug_level}" -ge 0 ]] && [[ "${exit}" -gt 0 ]]; then
+        if [[ "${LOG_DEBUG_LEVEL:-}" -ge 7 ]]; then
           dump_stack
           echo -e "${color}$(realpath -- ${0}): Exited with ${exit}${normal}"
-          exit ${exit}
         fi
+        exit ${exit}
       fi
       ;;
     *)
