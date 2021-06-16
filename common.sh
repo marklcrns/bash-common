@@ -123,7 +123,10 @@ confirm() {
   if ! ${SKIP_CONFIRM}; then
     ${BASH_SOURCE%/*}/confirm "${COLOR_YELLOW}${prompt}${COLOR_NC}}"
     if [[ "${?}" -eq 1 ]]; then
-      error "${SCRIPT_PATH}: Aborted." 1
+      log 'warn' "${SCRIPT_PATH}: Aborted."
+      exit 0
+    elif [[ "${?}" -eq 2 ]]; then
+      log 'error' "${SCRIPT_PATH}: Unsupported shell" 1
     fi
   fi
 }
