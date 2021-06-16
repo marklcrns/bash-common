@@ -32,7 +32,7 @@ source "${BASH_SOURCE%/*}/colors.sh"
 source "${BASH_SOURCE%/*}/log.sh"
 
 
-usage() {
+usage_generic() {
   local scriptpath="$(realpath -- "${0}")"
 
 cat <<- EOF
@@ -51,7 +51,7 @@ OPTIONS:
 EOF
 }
 
-handle_generic_args() {
+handle_args_generic() {
   local arg=
   for arg; do
     local delim=""
