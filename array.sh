@@ -10,6 +10,7 @@
 ################################################################## Functions ###
 #
 # array_has_element()
+# print_array_column()
 #
 ################################################################################
 # Author : Mark Lucernas <https://github.com/marklcrns>
@@ -42,4 +43,15 @@ array_has_element() {
     [[ "$arr" == "$match" ]] && return 0
   done
   return 1
+}
+
+
+# Print array in columns with 8 character padding. Uses column utility.
+# @param $@   Array
+print_array_column() {
+  local array=("${@}")
+
+  for value in "${array[@]}"; do
+    printf "%-8s\n" "${value}"
+  done | column
 }
