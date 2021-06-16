@@ -158,8 +158,8 @@ function log() {
       echo -e "${out}" >&2
       if [[ "${debug_level}" -ge 0 ]]; then
         if [[ "${exit}" -gt 0 ]]; then
-          echo -e "$(realpath -- ${0}): Exited with ${exit}"
           dump_stack
+          echo -e "$(realpath -- ${0}): Exited with ${exit}"
           echo -e "\nHere's a shell to debug with. 'exit 0' to continue. Other exit codes will abort - parent shell will terminate."
           bash || exit ${?}
         fi
