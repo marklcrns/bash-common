@@ -109,9 +109,11 @@ script_vars() {
     [[ "${SCRIPT_PATH}" != /* ]] && SCRIPT_PATH="${SCRIPT_DIR}/${SCRIPT_PATH}"
   done
   SCRIPT_DIR="$(cd -P "$(dirname "${SCRIPT_PATH}")" >/dev/null 2>&1 && pwd)"
+  SCRIPT_NAME="$(basename -- "${SCRIPT_PATH}")"
 
   readonly SCRIPT_PATH
   readonly SCRIPT_DIR
+  readonly SCRIPT_NAME
 }
 
 
