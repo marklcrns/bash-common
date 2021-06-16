@@ -68,10 +68,10 @@ handle_args_generic() {
 
   eval set -- ${args:-}
 
-  SKIP_CONFIRM=false
-  VERBOSE=false
-  DEBUG=false
-  LOG_DEBUG_LEVEL=3
+  [[ -z "${SKIP_CONFIRM+x}" ]]    && SKIP_CONFIRM=false
+  [[ -z "${VERBOSE+x}" ]]         && VERBOSE=false
+  [[ -z "${DEBUG+x}" ]]           && DEBUG=false
+  [[ -z "${LOG_DEBUG_LEVEL+x}" ]] && LOG_DEBUG_LEVEL=3
 
   OPTIND=1
   while getopts "m:p:vxyh" opt; do
