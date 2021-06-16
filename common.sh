@@ -121,7 +121,7 @@ confirm() {
   local prompt="${1:-Do you wish to continue? (Y/y): }"
 
   if ! ${SKIP_CONFIRM}; then
-    ${BASH_SOURCE%/*}/confirm "${COLOR_YELLOW}${prompt}${COLOR_NC}}"
+    ${BASH_SOURCE%/*}/confirm "${COLOR_YELLOW}${prompt}${COLOR_NC}"
     if [[ "${?}" -eq 1 ]]; then
       log 'warn' "${SCRIPT_PATH}: Aborted."
       exit 0
