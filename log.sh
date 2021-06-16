@@ -9,6 +9,11 @@
 #
 ########################################################### Global Variables ###
 #
+# LOG_DEBUG_LEVEL       = Debug level to trigger log level. Default = CRIT.
+#                         Debug > INFO > NOTICE > WARN > ERROR > CRIT
+#                         ALERT, and EMERG are unused and unhandled.
+# LOG_POP_CALLSTACK     = Pop from callstack in dump_stack(). Pop 2 by default
+#                         to omit dump_stack() and log()
 # LOG_TIMESTAMP_FORMAT  = Date and time format for log timestamp.
 # LOG_FILELOG_ENABLE    = Enable file logging.
 # LOG_FILELOG_DIR       = Directory to store file log.
@@ -16,9 +21,6 @@
 # LOG_SYSLOG_ENABLE     = Enable system logging (uses built-in `logger`)
 # LOG_SYSLOG_TAG        = `logger` tag (defaults to basename)
 # LOG_SYSLOG_FACILITY   = `logger` facility (defaults to local0)
-# DEBUG_LEVEL           = Debug level to trigger log level. Default = CRIT.
-#                         Debug > INFO > NOTICE > WARN > ERROR > CRIT
-#                         ALERT, and EMERG are unused and unhandled.
 #
 ###################################################################### Usage ###
 #
@@ -59,13 +61,17 @@ function _log_exception() {
 # https://unix.stackexchange.com/q/80476
 # https://stackoverflow.com/a/22617858
 function dump_stack() {
+  local pop="${1:-${LOG_POP_CALLSTACK:-2}}" # pop 2 by default to omit dump_stack() and log()
+
   local indent="${indent:-}  "
-  local stack=
-  i="${#FUNCNAME[@]}"
-  ((--i))
   printf "${indent}Function call stack ( command.function() ) ...\n" >&2
   indent="${indent}  "
-  while (( $i >= 0 )); do
+
+  local i="${#FUNCNAME[@]}"
+  ((--i))
+
+  local stack=
+  while (( $i >= pop )); do
     stack+="${indent}${BASH_SOURCE[${i}]}.${FUNCNAME[${i}]}():${BASH_LINENO[${i}-1]}\n"
     indent="${indent}|  "
     ((--i))
