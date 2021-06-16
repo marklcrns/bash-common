@@ -55,6 +55,24 @@ function _log_exception() {
   )
 }
 
+# Credits:
+# https://unix.stackexchange.com/q/80476
+# https://stackoverflow.com/a/22617858
+function dump_stack() {
+  local indent="${indent:-}  "
+  local stack=
+  i="${#FUNCNAME[@]}"
+  ((--i))
+  printf "${indent}Function call stack ( command.function() ) ...\n" >&2
+  indent="${indent}  "
+  while (( $i >= 0 )); do
+    stack+="${indent}${BASH_SOURCE[${i}]}.${FUNCNAME[${i}]}():${BASH_LINENO[${i}-1]}\n"
+    indent="${indent}|  "
+    ((--i))
+  done
+  printf "${stack}" >&2
+}
+
 function log() {
   local timestamp_format="${LOG_TIMESTAMP_FORMAT:-+%Y-%m-%dT%H:%M:%S}"
   local date="$(date ${timestamp_format})"
@@ -72,7 +90,7 @@ function log() {
   local level="$(echo "${1}" | awk '{print tolower($0)}')"
   local level_upper="$(echo "${level}" | awk '{print toupper($0)}')"
 
-  local message="${2}"
+  local message="${2:-}"
   local exit="${3:-0}"
 
   local -A severity
@@ -138,8 +156,10 @@ function log() {
       ;;
     'error'|'crit')
       echo -e "${out}" >&2
-      if [ "${debug_level}" -ge 0 ]; then
+      if [[ "${debug_level}" -ge 0 ]]; then
         if [[ "${exit}" -gt 0 ]]; then
+          echo -e "$(realpath -- ${0}): Exited with ${exit}"
+          dump_stack
           echo -e "\nHere's a shell to debug with. 'exit 0' to continue. Other exit codes will abort - parent shell will terminate."
           bash || exit ${?}
         fi
