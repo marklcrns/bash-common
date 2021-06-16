@@ -77,13 +77,14 @@ handle_args_generic() {
   while getopts "m:p:vxyh" opt; do
     case ${opt} in
       v)
-        readonly VERBOSE=true
+        [[ -z "${VERBOSE+x}" ]] && VERBOSE=true
         ;;
       x)
-        readonly LOG_DEBUG_LEVEL=7
+        [[ -z "${DEBUG+x}" ]]           && DEBUG=false
+        [[ -z "${LOG_DEBUG_LEVEL+x}" ]] && LOG_DEBUG_LEVEL=7
         ;;
       y)
-        readonly SKIP_CONFIRM=true
+        [[ -z "${SKIP_CONFIRM+x}" ]] && SKIP_CONFIRM=true
         ;;
       h)
         usage; exit 0
