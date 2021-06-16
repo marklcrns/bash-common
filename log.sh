@@ -165,7 +165,7 @@ function log() {
       if [[ "${debug_level}" -ge 0 ]]; then
         if [[ "${exit}" -gt 0 ]]; then
           dump_stack
-          echo -e "$(realpath -- ${0}): Exited with ${exit}"
+          echo -e "${color}$(realpath -- ${0}): Exited with ${exit}${normal}"
           exit ${exit}
         fi
       fi
