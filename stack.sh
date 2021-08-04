@@ -54,13 +54,13 @@ function stack_new {
   : ${1?'Missing stack name'}
 
   if stack_exists ${1}; then
-    echo "Stack already exists -- $1" >&2
+    echo "Stack already exists -- ${1}" >&2
     return 1
   fi
 
   eval "declare -ag _stack_$1"
   eval "declare -ig _stack_$1_i"
-  eval "let _stack_$1_i=0"
+  eval "let _stack_${1}_i=0"
   return 0
 }
 
@@ -82,17 +82,17 @@ function stack_push {
   : ${1?'Missing stack name'}
   : ${2?'Missing element(s) to push'}
 
-  if no_such_stack $1; then
-    echo "No such stack -- $1" >&2
+  if no_such_stack ${1}; then
+    echo "No such stack -- ${1}" >&2
     return 1
   fi
 
-  _stack=$1
+  _stack="${1}"
   shift 1
 
-  while (( $# > 0 )); do
+  while (( ${#} > 0 )); do
     eval '_i=$'"_stack_${_stack}_i"
-    eval "_stack_${_stack}[$_i]='$1'"
+    eval "_stack_${_stack}[${_i}]='${1}'"
     eval "let _stack_${_stack}_i+=1"
     shift 1
   done
@@ -112,14 +112,14 @@ function stack_print {
     return 1
   fi
 
-  tmp=""
-  eval 'let _i=$'_stack_$1_i
-  while (( $_i > 0 )); do
+  local _tmp=""
+  eval 'let _i=$'_stack_${1}_i
+  while (( ${_i} > 0 )); do
     let _i=${_i}-1
-    eval 'e=$'"{_stack_$1[$_i]}"
-    tmp="$tmp $e"
+    eval '_elem=$'"{_stack_$1[${_i}]}"
+    _tmp="${_tmp} ${_elem}"
   done
-  echo "(" $tmp ")"
+  echo "(${_tmp} )"
 
   return 0
 }
@@ -133,11 +133,11 @@ function stack_size {
   : ${2?'Missing name of variable for stack size result'}
 
   if no_such_stack $1; then
-    echo "No such stack -- $1" >&2
+    echo "No such stack -- ${1}" >&2
     return 1
   fi
 
-  eval "$2"='$'"{#_stack_$1[*]}"
+  eval "${2}"='$'"{#_stack_${1}[*]}"
   return 0
 }
 
@@ -149,21 +149,21 @@ function stack_pop {
   : ${1?'Missing stack name'}
   : ${2?'Missing name of variable for popped result'}
 
-  eval 'let _i=$'"_stack_$1_i"
-  if no_such_stack $1; then
+  eval 'let _i=$'"_stack_${1}_i"
+  if no_such_stack ${1}; then
     echo "No such stack -- $1" >&2
     return 1
   fi
 
-  if [[ "$_i" -eq 0 ]]; then
-    echo "Empty stack -- $1" >&2
+  if [[ "${_i}" -eq 0 ]]; then
+    echo "Empty stack -- ${1}" >&2
     return 1
   fi
 
   let _i-=1
-  eval "$2"='$'"{_stack_$1[$_i]}"
-  eval "unset _stack_$1[$_i]"
-  eval "_stack_$1_i=$_i"
+  eval "${2}"='$'"{_stack_${1}[${_i}]}"
+  eval "unset _stack_${1}[${_i}]"
+  eval "_stack_${1}_i=${_i}"
   unset _i
 
   return 0
@@ -175,8 +175,8 @@ function stack_pop {
 function stack_exists {
   : ${1?'Missing stack name'}
 
-  eval '_i=$'"{_stack_$1_i:-}"
-  [[ -z "$_i" ]] && return 1 || return 0
+  eval '_i=$'"{_stack_${1}_i:-}"
+  [[ -z "${_i}" ]] && return 1 || return 0
 }
 
 # Check if stack variable does not exists
@@ -185,10 +185,10 @@ function stack_exists {
 function no_such_stack {
   : ${1?'Missing stack name'}
   stack_exists $1
-  ret=$?
+  local _ret=$?
   declare -i x
-  let x="1-$ret"
+  let x="1-${_ret}"
 
-  return $x
+  return ${x}
 }
 
