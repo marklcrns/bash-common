@@ -117,9 +117,9 @@ function stack_print {
   while (( ${_i} > 0 )); do
     let _i=${_i}-1
     eval '_elem=$'"{_stack_$1[${_i}]}"
-    _tmp="${_tmp} ${_elem}"
+    _tmp="${_tmp}${_elem} "
   done
-  echo "(${_tmp} )"
+  echo "${_tmp}"
 
   return 0
 }
