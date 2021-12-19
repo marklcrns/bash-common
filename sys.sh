@@ -52,19 +52,35 @@ is_linux() {
 }
 
 
-# Set nameserver to $1 after backing up resolve.conf to ~/nameserver.bak
+# Set nameserver to $1 after backing up resolve.conf to /tmp/nameserver.bak
 # Setting nameserver to "8.8.8.8" fixes connection issue when updating apt packages
 set_nameserver() {
   if ! is_wsl; then
     echo "ERROR: Not running in Microsoft WSL" >&2;
     exit 1
   fi
-
+  
   local nameserver="${1:-8.8.8.8}"
-  cat /etc/resolv.conf > ~/nameserver.bak
-  echo "nameserver ${nameserver}" | sudo tee /etc/resolv.conf &> /dev/null
+  local nameserver_path="/etc/resolv.conf"
+  local nameserver_bak="nameserver.bak"
+  local nameserver_bak_dir="/tmp"
+
+  cat "${nameserver_path}" > "${nameserver_bak_dir}/${nameserver_bak}"
+  echo "nameserver ${nameserver}" | sudo tee "${nameserver_path}" &> /dev/null
 }
 
 restore_nameserver() {
-  [[ -e "$HOME/nameserver.bak" ]] && cat ~/nameserver.bak | sudo tee /etc/resolv.conf &> /dev/null
+  if ! is_wsl; then
+    echo "ERROR: Not running in Microsoft WSL" >&2;
+    exit 1
+  fi
+
+  local nameserver_path="/etc/resolv.conf"
+  local nameserver_bak="nameserver.bak"
+  local nameserver_bak_dir="/tmp"
+
+  [[ -e "${nameserver_bak_dir}/${nameserver_bak}" ]] && \
+    cat "${nameserver_bak_dir}/${nameserver_bak}" | \
+    sudo tee "${nameserver_path}" &> /dev/null | \
+    rm "${nameserver_bak_dir}/${nameserver_bak}"
 }
