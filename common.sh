@@ -120,15 +120,19 @@ script_vars() {
 
 confirm() {
   local prompt="${1:-Do you wish to continue? (Y/y): }"
+  local script_path=${SCRIPT_PATH:-"$(realpath -- "${0}")"}
 
   if ! ${SKIP_CONFIRM}; then
     ${BASH_SOURCE%/*}/confirm "${COLOR_YELLOW}${prompt}${COLOR_NC}"
-    if [[ "${?}" -eq 1 ]]; then
-      log 'warn' "${SCRIPT_PATH}: Aborted."
-      exit 0
-    elif [[ "${?}" -eq 2 ]]; then
-      log 'error' "${SCRIPT_PATH}: Unsupported shell" 1
+    local ret=$?
+
+    if [[ ${ret} -eq 1 ]]; then
+      log 'warn' "${script_path}: Aborted."
+    elif [[ ${ret} -eq 2 ]]; then
+      log 'error' "${script_path}: Unsupported shell" 1
     fi
+
+    return ${ret}
   fi
 }
 
