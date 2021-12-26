@@ -61,117 +61,118 @@ function _log_exception() {
 # https://unix.stackexchange.com/q/80476
 # https://stackoverflow.com/a/22617858
 function dump_stack() {
-  local pop="${1:-${LOG_POP_CALLSTACK:-2}}" # pop 2 by default to omit dump_stack() and log()
+  local __pop="${1:-${LOG_POP_CALLSTACK:-2}}" # pop 2 by default to omit dump_stack() and log()
 
-  local indent="${indent:-}  "
-  printf "${indent}Function call stack ( command.function() ) ...\n" >&2
-  indent="${indent}  "
+  local __indent="${__indent:-}  "
+  printf "${__indent}Function call stack ( command.function() ) ...\n" >&2
+  __indent="${__indent}  "
 
-  local i="${#FUNCNAME[@]}"
-  ((--i))
+  local __i="${#FUNCNAME[@]}"
+  ((--__i))
 
   local stack=
-  while (( $i >= pop )); do
-    stack+="${indent}${BASH_SOURCE[${i}]}.${FUNCNAME[${i}]}():${BASH_LINENO[${i}-1]}\n"
-    indent="${indent}|  "
+  while (( $__i >= __pop )); do
+    stack+="${__indent}${BASH_SOURCE[${__i}]}.${FUNCNAME[${__i}]}():${BASH_LINENO[${__i}-1]}\n"
+    __indent="${__indent}|  "
     ((--i))
   done
   printf "${stack}" >&2
 }
 
 function log() {
-  local timestamp_format="${LOG_TIMESTAMP_FORMAT:-+%Y-%m-%dT%H:%M:%S}"
-  local date="$(date ${timestamp_format})"
+  local __timestamp_format="${LOG_TIMESTAMP_FORMAT:-+%Y-%m-%dT%H:%M:%S}"
+  local __date="$(date ${__timestamp_format})"
 
-  local filelog="${LOG_FILELOG:-false}"
-  local filelog_dir="${LOG_FILELOG_DIR:-/tmp}"
-  local filelog_name="${LOG_FILELOG_NAME:-$(realpath -s "${0}" | sed "s,/,%,g")}"
-  local filelog_path="${filelog_dir}/${filelog_name}.log"
+  local __filelog="${LOG_FILELOG:-false}"
+  local __filelog_dir="${LOG_FILELOG_DIR:-/tmp}"
+  local __filelog_name="${LOG_FILELOG_NAME:-$(realpath -s "${0}" | sed "s,/,%,g")}"
+  local __filelog_path="${__filelog_dir}/${__filelog_name}.log"
 
-  local syslog="${LOG_SYSLOG:-false}";
-  local syslog_tag="${LOG_SYSLOG_TAG:-$(basename -- "${0}")}";
-  local syslog_facility="${LOG_SYSLOG_FACILITY:-local0}";
+  local __syslog="${LOG_SYSLOG:-false}";
+  local __syslog_tag="${LOG_SYSLOG_TAG:-$(basename -- "${0}")}";
+  local __syslog_facility="${LOG_SYSLOG_FACILITY:-local0}";
 
-  local pid="${$}";
-  local level="$(echo "${1}" | awk '{print tolower($0)}')"
-  local level_upper="$(echo "${level}" | awk '{print toupper($0)}')"
+  local __pid="${$}";
+  local __level="$(echo "${1}" | awk '{print tolower($0)}')"
+  local __level_upper="$(echo "${__level}" | awk '{print toupper($0)}')"
 
-  local message="${2:-}"
-  local exit="${3:-0}"
+  local __message="${2:-}"
+  local __exit="${3:-0}"
 
-  local -A severity
-  severity['DEBUG']=7
-  severity['INFO']=6
-  severity['NOTICE']=5
-  severity['WARN']=4
-  severity['ERROR']=3   # Default
-  severity['CRIT']=2
-  severity['ALERT']=1   # Unused
-  severity['EMERG']=0   # Unused
-  readonly severity
+  local -A __severity
+  __severity['DEBUG']=7
+  __severity['INFO']=6
+  __severity['NOTICE']=5
+  __severity['WARN']=4
+  __severity['ERROR']=3   # Default
+  __severity['CRIT']=2
+  __severity['ALERT']=1   # Unused
+  __severity['EMERG']=0   # Unused
+  readonly __severity
 
-  local debug_level="${LOG_DEBUG_LEVEL:-3}"
-  local severity_level="${severity[${level_upper}]:-2}"
+  local __debug_level="${LOG_DEBUG_LEVEL:-3}"
+  local __severity_level="${__severity[${__level_upper}]:-2}"
 
   # Log all levels
-  if [[ "${debug_level}" -ge 0 ]] && [[ "${severity_level}" -le 7 ]]; then
+  if [[ "${__debug_level}" -ge 0 ]] && [[ "${__severity_level}" -le 7 ]]; then
 
-    if ${syslog}; then
-      local syslog_message="${level_upper}: ${message}";
+    if ${__syslog}; then
+      local syslog_message="${__level_upper}: ${__message}";
       logger \
-        --id="${pid}" \
-        -t "${syslog_tag}" \
-        -p "${syslog_facility}.${severity_level}" \
+        --id="${__pid}" \
+        -t "${__syslog_tag}" \
+        -p "${__syslog_facility}.${__severity_level}" \
         "${syslog_message}" \
-        || _log_exception "logger --id=\"${pid}\" -t \"${syslog_tag}\" -p \"${syslog_facility}.${level}\" \"${syslog_message}\"";
+        || _log_exception "logger --id=\"${__pid}\" -t \"${__syslog_tag}\" -p
+              \"${__syslog_facility}.${__level}\" \"${syslog_message}\"";
     fi;
 
-    if ${filelog}; then
-      local file_message="${date} [${level_upper}] ${message}";
-      echo -e "${file_message}" >> "${filelog_path}" \
-        || _log_exception "echo -e \"${file_message}\" >> \"${filelog_path}\"";
+    if ${__filelog}; then
+      local file_message="${__date} [${__level_upper}] ${__message}";
+      echo -e "${file_message}" >> "${__filelog_path}" \
+        || _log_exception "echo -e \"${file_message}\" >> \"${__filelog_path}\"";
     fi;
 
   fi;
 
-  if [[ "${severity_level}" -gt "${debug_level}" ]]; then
+  if [[ "${__severity_level}" -gt "${__debug_level}" ]]; then
     return
   fi
 
-  local -A colors
-  colors['DEBUG']='\033[0;35m'    # Purple
-  colors['INFO']=''               # Normal
-  colors['NOTICE']='\033[0;34m'   # Blue
-  colors['WARN']='\033[0;33m'     # Yellow
-  colors['ERROR']='\033[0;31m'    # Red
-  colors['CRIT']='\033[1;31m'     # Bold red
-  colors['ALERT']=''
-  colors['EMERG']=''
-  colors['DEFAULT']='\033[0m'     # Normal
-  readonly colors
+  local -A __colors
+  __colors['DEBUG']='\033[0;35m'    # Purple
+  __colors['INFO']=''               # Normal
+  __colors['NOTICE']='\033[0;34m'   # Blue
+  __colors['WARN']='\033[0;33m'     # Yellow
+  __colors['ERROR']='\033[0;31m'    # Red
+  __colors['CRIT']='\033[1;31m'     # Bold red
+  __colors['ALERT']=''
+  __colors['EMERG']=''
+  __colors['DEFAULT']='\033[0m'     # Normal
+  readonly __colors
 
   # Stdout (Pretty)
-  local normal="${colors['DEFAULT']}"
-  local color="${colors[${level_upper}]:-\033[0m}" # Defaults to normal
+  local __normal_color="${__colors['DEFAULT']}"
+  local __color="${__colors[${__level_upper}]:-\033[0m}" # Defaults to normal
 
-  local out="${color}[${level_upper}] ${date} ${message}${normal}"
+  local out="${__color}[${__level_upper}] ${__date} ${__message}${__normal_color}"
 
-  case "${level}" in
+  case "${__level}" in
     'info'|'notice'|'warn'|'debug')
       echo -e "${out}"
       ;;
     'error'|'crit')
       echo -e "${out}" >&2
-      if [[ "${debug_level}" -ge 0 ]] && [[ "${exit}" -gt 0 ]]; then
+      if [[ "${__debug_level}" -ge 0 ]] && [[ "${__exit}" -gt 0 ]]; then
         if [[ "${LOG_DEBUG_LEVEL:-}" -ge 7 ]]; then
           dump_stack
-          echo -e "${color}$(realpath -- ${0}): Exited with ${exit}${normal}"
+          echo -e "${__color}$(realpath -- ${0}): Exited with ${__exit}${__normal_color}"
         fi
-        exit ${exit}
+        exit ${__exit}
       fi
       ;;
     *)
-      log 'error' "Undefined log level '${level}' trying to log: '${@}'"
+      log 'error' "Undefined log level '${__level}' trying to log: '${@}'"
       ;;
   esac
 }
