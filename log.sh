@@ -10,7 +10,7 @@
 ########################################################### Global Variables ###
 #
 # LOG_DEBUG_LEVEL       = Debug level to trigger log level. Default = 7 (CRIT)
-#                         Debug > INFO > NOTICE > WARN > ERROR > CRIT
+#                         DEBUG > INFO > NOTICE > WARN > ERROR > CRIT
 #                         ALERT, and EMERG are unused and unhandled.
 # LOG_POP_CALLSTACK     = Pop from callstack in dump_stack(). Pop 2 by default
 #                         to omit dump_stack() and log()
