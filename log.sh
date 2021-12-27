@@ -74,7 +74,7 @@ function dump_stack() {
   while (( $__i >= __pop )); do
     stack+="${__indent}${BASH_SOURCE[${__i}]}.${FUNCNAME[${__i}]}():${BASH_LINENO[${__i}-1]}\n"
     __indent="${__indent}|  "
-    ((--i))
+    ((--__i))
   done
   printf "${stack}" >&2
 }
