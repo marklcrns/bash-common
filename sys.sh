@@ -32,9 +32,46 @@ fi
 
 
 is_wsl() {
-  (grep -qEi "(Microsoft|WSL)" /proc/version &> /dev/null) \
+  (grep -qEi "(microsoft|WSL)" /proc/version &> /dev/null) \
     && return 0 \
     || return 1
+}
+
+
+is_wsl2() {
+  (grep -qEi "(WSL2)" /proc/version &> /dev/null) \
+    && return 0 \
+    || return 1
+}
+
+# Ref: https://unix.stackexchange.com/a/6348
+os_release() {
+  if [[ -f '/etc/os-release' ]]; then
+    # freedesktop.org and systemd
+    . /etc/os-release
+    OS_DISTRIB_ID="${NAME}"
+    OS_DISTRIB_RELEASE="${VERSION_ID}"
+    OS_DISTRIB_CODENAME="${VERSION_CODENAME}"
+  elif type lsb_release >/dev/null 2>&1; then
+    # linuxbase.org
+    OS_DISTRIB_ID="$(lsb_release -si)"
+    OS_DISTRIB_RELEASE="$(lsb_release -sr)"
+    OS_DISTRIB_CODENAME="$(lsb_release -sc)"
+  elif [[ -f '/etc/lsb-release' ]]; then
+    # For some versions of Debian/Ubuntu without lsb_release command
+    . /etc/lsb-release
+    OS_DISTRIB_ID="${DISTRIB_ID}"
+    OS_DISTRIB_RELEASE="${DISTRIB_RELEASE}"
+    OS_DISTRIB_CODENAME="${DISTRIB_CODENAME}"
+  else
+    # Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
+    OS_DISTRIB_ID=$(uname -s)
+    OS_DISTRIB_RELEASE=$(uname -r)
+  fi
+
+  # lowercase
+  OS_DISTRIB_ID=$(echo ${OS_DISTRIB_ID} | tr '/A-Z/' '/a-z/')
+  OS_DISTRIB_CODENAME=$(echo ${OS_DISTRIB_CODENAME} | tr '/A-Z/' '/a-z/')
 }
 
 
@@ -42,6 +79,10 @@ is_darwin() {
   [[ "$(uname)" == "Darwin" ]] \
     && return 0 \
     || return 1
+}
+
+is_mac_os() {
+  is_darwin; return $?
 }
 
 
