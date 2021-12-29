@@ -70,7 +70,7 @@ strip_extra_whitespace() {
 # Ref: https://stackoverflow.com/a/18000433
 # Also works with '\x1b', '\e' or '\033' escape special character ANSI prefix
 # from string literals. e.g. '\x1b[0;31mThis is a test' -> 'This is a test'
-strip_ansi_codes() {
+strip_ansi_code() {
   local __stripped=$(eval "echo \"\$$1\"" | sed -r 's/(\x1b|\\x1b|\\e|\\033)\[([0-9]{1,3}(;[0-9]{1,2})?)?[mGK]//g')
   eval "$1='$__stripped'"
 }
