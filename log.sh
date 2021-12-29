@@ -141,13 +141,13 @@ function log() {
 
   local -A __colors
   __colors['DEBUG']='\033[0;35m'    # Purple
-  __colors['INFO']=''               # Normal
+  __colors['INFO']='\033[0;90m'     # Gray
   __colors['NOTICE']='\033[0;34m'   # Blue
   __colors['WARN']='\033[0;33m'     # Yellow
   __colors['ERROR']='\033[0;31m'    # Red
   __colors['CRIT']='\033[1;31m'     # Bold red
-  __colors['ALERT']=''
-  __colors['EMERG']=''
+  __colors['ALERT']='\033[1;31m'
+  __colors['EMERG']='\033[1;31m'
   __colors['DEFAULT']='\033[0m'     # Normal
   readonly __colors
 
