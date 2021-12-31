@@ -35,12 +35,12 @@ fi
 # @param $2   Array variable to search from
 # @return     Return 0 if the element is in array, else 1
 array_has_element() {
-  local match="$1"
+  local __match="$1"
   shift 1
 
   local arr=
   for arr; do
-    [[ "$arr" == "$match" ]] && return 0
+    [[ "${arr}" == "${__match}" ]] && return 0
   done
   return 1
 }
@@ -49,9 +49,16 @@ array_has_element() {
 # Print array in columns with 8 character padding. Uses column utility.
 # @param $@   Array
 print_array_column() {
-  local array=("${@}")
+  local __array=("${@}")
 
-  for value in "${array[@]}"; do
+  for value in "${__array[@]}"; do
     printf "%-8s\n" "${value}"
   done | column
+}
+
+
+array_unique() {
+  : ${1:?Missing array name}
+  local __unique=( $(eval "echo \${$1[*]} | tr ' ' '\012' | uniq") )
+  eval "${1}=( ${__unique} )"
 }
