@@ -60,5 +60,5 @@ print_array_column() {
 array_unique() {
   : ${1:?Missing array name}
   local __unique=( $(eval "echo \${$1[*]} | tr ' ' '\012' | uniq") )
-  eval "${1}=( ${__unique} )"
+  eval "${1}=( ${__unique[@]} )"
 }
