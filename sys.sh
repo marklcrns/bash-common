@@ -25,6 +25,7 @@ if [ "${0##*/}" == "${BASH_SOURCE[0]##*/}" ]; then
   exit 1
 fi
 
+
 # Header guard
 [[ -z "${COMMON_SYSTEM_SH_INCLUDED+x}" ]] \
   && readonly COMMON_SYSTEM_SH_INCLUDED=1 \
@@ -43,6 +44,7 @@ is_wsl2() {
     && return 0 \
     || return 1
 }
+
 
 # Ref: https://unix.stackexchange.com/a/6348
 os_release() {
@@ -81,6 +83,7 @@ is_darwin() {
     || return 1
 }
 
+
 is_mac_os() {
   is_darwin; return $?
 }
@@ -110,6 +113,7 @@ set_nameserver() {
   echo "nameserver ${nameserver}" | sudo tee "${nameserver_path}" &> /dev/null
 }
 
+
 restore_nameserver() {
   if ! is_wsl; then
     echo "ERROR: Not running in Microsoft WSL" >&2;
@@ -125,3 +129,4 @@ restore_nameserver() {
     sudo tee "${nameserver_path}" &> /dev/null | \
     rm "${nameserver_bak_dir}/${nameserver_bak}"
 }
+
