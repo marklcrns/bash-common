@@ -25,7 +25,8 @@ if [ -n "$(${SHELL} -c 'echo ${ZSH_VERSION}')" ]; then # Zsh prompt
   read REPLY
   reply
 elif [ -n "$(${SHELL} -c 'echo ${BASH_VERSION}')" ]; then # Bash prompt
-  read -p "${MESSAGE}" -n 1 -r
+  echo -ne "${MESSAGE}"
+  read -n 1 -r
   reply
 else
   echo -e "ERROR: Shell not suported" >&2
