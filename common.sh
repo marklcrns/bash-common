@@ -53,7 +53,7 @@ EOF
 
 handle_args_generic() {
   local arg=
-  for arg; do
+  for arg in ${@}; do
     local delim=""
     case "${arg}" in
       --verbose)        args="${args:-}-v ";;
@@ -77,14 +77,14 @@ handle_args_generic() {
   while getopts "m:p:vxyh" opt; do
     case ${opt} in
       v)
-        [[ -z "${VERBOSE+x}" ]] && VERBOSE=true
+        VERBOSE=true
         ;;
       x)
-        [[ -z "${DEBUG+x}" ]]           && DEBUG=true
-        [[ -z "${LOG_DEBUG_LEVEL+x}" ]] && LOG_DEBUG_LEVEL=7
+        DEBUG=true
+        LOG_DEBUG_LEVEL=7
         ;;
       y)
-        [[ -z "${SKIP_CONFIRM+x}" ]] && SKIP_CONFIRM=true
+        SKIP_CONFIRM=true
         ;;
       h)
         usage; exit 0
