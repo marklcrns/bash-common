@@ -37,7 +37,7 @@ readonly BASH_EX_INVALIDEXARG=128    # invalid argument to 'exit'
 readonly BASH_EX_SIGFATAL_BASE=128   # fatal error signal "n"
 readonly BASH_EX_TERMCTRLC=130       # terminated by Ctrl-c
 
-# ABSG sysexits.h
+# sysexits.h
 # /usr/include/sysexits.h/ or `man sysexits`
 readonly BASH_SYS_EX__BASE=64        # base value for error messages
 readonly BASH_SYS_EX_USAGE=64        # command line usage error
