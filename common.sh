@@ -44,7 +44,7 @@ USAGE:
 
 OPTIONS:
 
-  -v --verbose   verbose output
+  -q --quiet     suppress output
   -x --debug     debug
   -y --skip      skip confirmation
   -h --help      show usage
@@ -56,7 +56,7 @@ handle_args_generic() {
   for arg in ${@}; do
     local delim=""
     case "${arg}" in
-      --verbose)        args="${args:-}-v ";;
+      --quiet)          args="${args:-}-q ";;
       --debug)          args="${args:-}-x ";;
       --skip-confirm)   args="${args:-}-y ";;
       --help)           args="${args:-}-h ";;
@@ -69,15 +69,15 @@ handle_args_generic() {
   eval set -- ${args:-}
 
   [[ -z "${SKIP_CONFIRM+x}" ]]    && SKIP_CONFIRM=false
-  [[ -z "${VERBOSE+x}" ]]         && VERBOSE=false
+  [[ -z "${VERBOSE+x}" ]]         && VERBOSE=true
   [[ -z "${DEBUG+x}" ]]           && DEBUG=false
   [[ -z "${LOG_DEBUG_LEVEL+x}" ]] && LOG_DEBUG_LEVEL=3
 
   OPTIND=1
-  while getopts "m:p:vxyh" opt; do
+  while getopts "m:p:qxyh" opt; do
     case ${opt} in
-      v)
-        VERBOSE=true
+      q)
+        VERBOSE=false
         ;;
       x)
         DEBUG=true
