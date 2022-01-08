@@ -31,6 +31,7 @@ fi
 readonly BASH_EX_OK=0                # successful termination
 readonly BASH_EX_GENERAL=1           # catchall for general errors
 readonly BASH_EX_MISUSE=2            # misuse of shell builtins (e.g., missing arg or permission problem)
+readonly BASH_EX_TIMEOUT=124         # command timout (unresponsive)
 readonly BASH_EX_EXECERR=126         # command invoked cannot execute
 readonly BASH_EX_NOTFOUND=127        # command not found
 readonly BASH_EX_INVALIDEXARG=128    # invalid argument to 'exit'
