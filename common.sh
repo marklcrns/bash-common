@@ -89,6 +89,9 @@ handle_args_generic() {
       h)
         usage; exit 0
         ;;
+      *)
+        error "Invalid flag option(s)"
+        exit $BASH_SYS_EX_USAGE
     esac
   done
   shift "$((OPTIND-1))"
