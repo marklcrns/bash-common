@@ -48,6 +48,9 @@ fi
   || return 0
 
 
+source "${BASH_SOURCE%/*}/colors.sh"
+
+
 function _log_exception() {
   (
     LOG_FILELOG=false;
@@ -140,15 +143,15 @@ function log() {
   fi
 
   local -A __colors
-  __colors['DEBUG']='\033[0;35m'    # Purple
-  __colors['INFO']='\033[0;90m'     # Gray
-  __colors['NOTICE']='\033[0;34m'   # Blue
-  __colors['WARN']='\033[0;33m'     # Yellow
-  __colors['ERROR']='\033[0;31m'    # Red
-  __colors['CRIT']='\033[1;31m'     # Bold red
-  __colors['ALERT']='\033[1;31m'
-  __colors['EMERG']='\033[1;31m'
-  __colors['DEFAULT']='\033[0m'     # Normal
+  __colors['DEBUG']="${COLOR_PURPLE}"
+  __colors['INFO']="${COLOR_HI_BLACK}"
+  __colors['NOTICE']="${COLOR_BLUE}"
+  __colors['WARN']="${COLOR_YELLOW}"
+  __colors['ERROR']="${COLOR_RED}"
+  __colors['CRIT']="${COLOR_BO_RED}"
+  __colors['ALERT']="${COLOR_BO_RED}"
+  __colors['EMERG']="${COLOR_BO_RED}"
+  __colors['DEFAULT']="${COLOR_NC}"
   readonly __colors
 
   # Stdout (Pretty)
