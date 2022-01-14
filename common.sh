@@ -44,10 +44,11 @@ USAGE:
 
 OPTIONS:
 
-  -q --quiet     suppress output
-  -x --debug     debug
-  -y --skip      skip confirmation
-  -h --help      show usage
+  --quiet         -q    Suppress standard output. LOG_DEBUG_LEVEL=3.
+  --debug         -x    Debug mode (print all log levels). LOG_DEBUG_LEVEL=7.
+  --skip-confirm  -y    Skip confirmation.
+  --no-colors     -z    Disable output colors.
+  --help          -h    Print usage.
 EOF
 }
 
@@ -59,6 +60,7 @@ handle_args_generic() {
       --quiet)          args="${args:-}-q ";;
       --debug)          args="${args:-}-x ";;
       --skip-confirm)   args="${args:-}-y ";;
+      --no-colors)      args="${args:-}-z ";;
       --help)           args="${args:-}-h ";;
       *)
         [[ "${arg:0:1}" == "-" ]] || delim="\""
@@ -72,9 +74,10 @@ handle_args_generic() {
   [[ -z "${VERBOSE+x}" ]]         && VERBOSE=true
   [[ -z "${DEBUG+x}" ]]           && DEBUG=false
   [[ -z "${LOG_DEBUG_LEVEL+x}" ]] && LOG_DEBUG_LEVEL=3
+  [[ -z "${ENABLE_COLORS+x}" ]]   && ENABLE_COLORS=true
 
   OPTIND=1
-  while getopts "m:p:qxyh" opt; do
+  while getopts "m:p:qxyzh" opt; do
     case ${opt} in
       q)
         VERBOSE=false
@@ -85,6 +88,10 @@ handle_args_generic() {
         ;;
       y)
         SKIP_CONFIRM=true
+        ;;
+      z)
+        ENABLE_COLORS=false
+        source "${BASH_SOURCE%/*}/colors.sh"
         ;;
       h)
         usage; exit 0
