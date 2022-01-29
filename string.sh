@@ -141,3 +141,7 @@ capitalize() {
   eval "$1='$__capitalize'"
 }
 
+
+is_integer() {
+  [[ "${@:-}" =~ ^[0-9]+$ ]] && return 0 || return 1
+}
