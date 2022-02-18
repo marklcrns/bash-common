@@ -12,8 +12,6 @@
 # Date   : 2021-06-15
 ################################################################################
 
-set -o pipefail
-set -o nounset
 
 if [ "${0##*/}" == "${BASH_SOURCE[0]##*/}" ]; then
   echo "WARNING: $(realpath -s $0) is not meant to be executed directly!" >&2;

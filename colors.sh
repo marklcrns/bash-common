@@ -19,11 +19,6 @@ if [ "${0##*/}" == "${BASH_SOURCE[0]##*/}" ]; then
   exit 1
 fi
 
-# # Header guard (DEPRECATED)
-# [[ -z "${COMMON_COLORS_SH_INCLUDED+x}" ]] \
-#   && readonly COMMON_COLORS_SH_INCLUDED=1 \
-#   || return 0
-
 # Switch Header guard
 [[ -z "${ENABLE_COLORS+x}" ]] && ENABLE_COLORS=false
 $ENABLE_COLORS && [[ -n "${COLOR_ANSI_CODE_PREFIX+x}" ]] \
