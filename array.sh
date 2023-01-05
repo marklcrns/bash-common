@@ -57,8 +57,12 @@ print_array_column() {
 }
 
 
+# https://stackoverflow.com/a/13648438/11850077
+# Filter out array duplicate elements
+# @param $1   Array
+# @return     Return array without duplicate elements
 array_unique() {
   : ${1:?Missing array name}
-  local __unique=( $(eval "echo \${$1[*]} | tr ' ' '\012' | uniq") )
+  local __unique=( $(eval "echo \${$1[*]} | tr ' ' '\n' | sort -u | tr '\n' ' '") )
   eval "${1}=( ${__unique[@]} )"
 }
