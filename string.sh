@@ -29,10 +29,11 @@
 ################################################################################
 # Author:   Mark Lucernas <https://github.com/marklcrns>
 # Date:     2021-05-31
+# Edited:   2023-07-07
 ################################################################################
 
 if [ "${0##*/}" == "${BASH_SOURCE[0]##*/}" ]; then
-	echo "WARNING: $(realpath -s $0) is not meant to be executed directly!" >&2
+	echo "WARNING: $(realpath -s "$0") is not meant to be executed directly!" >&2
 	echo "Use this script only by sourcing it." >&2
 	exit 1
 fi
@@ -140,5 +141,5 @@ capitalize() {
 }
 
 is_integer() {
-	[[ "${@:-}" =~ ^[0-9]+$ ]] && return 0 || return 1
+	[[ "${*:-}" =~ ^[0-9]+$ ]] && return 0 || return 1
 }

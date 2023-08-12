@@ -19,7 +19,7 @@
 ################################################################################
 
 if [ "${0##*/}" == "${BASH_SOURCE[0]##*/}" ]; then
-	echo "WARNING: $(realpath -s $0) is not meant to be executed directly!" >&2
+	echo "WARNING: $(realpath -s "$0") is not meant to be executed directly!" >&2
 	echo "Use this script only by sourcing it." >&2
 	exit 1
 fi
@@ -67,8 +67,8 @@ os_release() {
 	fi
 
 	# lowercase
-	OS_DISTRIB_ID=$(echo ${OS_DISTRIB_ID} | tr '/A-Z/' '/a-z/')
-	OS_DISTRIB_CODENAME=$(echo ${OS_DISTRIB_CODENAME} | tr '/A-Z/' '/a-z/')
+	OS_DISTRIB_ID=$(echo "${OS_DISTRIB_ID}" | tr '/A-Z/' '/a-z/')
+	OS_DISTRIB_CODENAME=$(echo "${OS_DISTRIB_CODENAME}" | tr '/A-Z/' '/a-z/')
 }
 
 is_darwin() {
@@ -83,7 +83,7 @@ is_mac_os() {
 }
 
 is_linux() {
-	[[ "$(expr substr $(uname -s) 1 5)" == "Linux" ]] &&
+	[[ "$(expr substr "$(uname -s)" 1 5)" == "Linux" ]] &&
 		return 0 ||
 		return 1
 }
