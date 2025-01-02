@@ -68,7 +68,9 @@ os_release() {
 
 	# lowercase
 	OS_DISTRIB_ID=$(echo "${OS_DISTRIB_ID}" | tr '/A-Z/' '/a-z/')
-	OS_DISTRIB_CODENAME=$(echo "${OS_DISTRIB_CODENAME}" | tr '/A-Z/' '/a-z/')
+  if [[ -n "${OS_DISTRIB_CODENAME}" ]]; then
+    OS_DISTRIB_CODENAME=$(echo ${OS_DISTRIB_CODENAME} | tr '/A-Z/' '/a-z/')
+  fi
 }
 
 is_darwin() {
