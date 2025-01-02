@@ -90,6 +90,11 @@ function log() {
 	local __syslog_tag="${LOG_SYSLOG_TAG:-$(basename -- "${0}")}"
 	local __syslog_facility="${LOG_SYSLOG_FACILITY:-local0}"
 
+	# disable syslog for macOS
+	if [[ "$(uname -s)" == "Darwin" ]]; then
+		__syslog=false
+	fi
+
 	local __pid="${$}"
 	local __level="$(echo "${1}" | awk '{print tolower($0)}')"
 	local __level_upper="$(echo "${__level}" | awk '{print toupper($0)}')"
