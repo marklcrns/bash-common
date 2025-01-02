@@ -64,13 +64,12 @@ os_release() {
 		# Fall back to uname, e.g. "Linux <version>", also works for BSD, etc.
 		OS_DISTRIB_ID=$(uname -s)
 		OS_DISTRIB_RELEASE=$(uname -r)
+		OS_DISTRIB_CODENAME=""
 	fi
 
 	# lowercase
 	OS_DISTRIB_ID=$(echo "${OS_DISTRIB_ID}" | tr '/A-Z/' '/a-z/')
-  if [[ -n "${OS_DISTRIB_CODENAME}" ]]; then
-    OS_DISTRIB_CODENAME=$(echo ${OS_DISTRIB_CODENAME} | tr '/A-Z/' '/a-z/')
-  fi
+	OS_DISTRIB_CODENAME=$(echo ${OS_DISTRIB_CODENAME} | tr '/A-Z/' '/a-z/')
 }
 
 is_darwin() {
