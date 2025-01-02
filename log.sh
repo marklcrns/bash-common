@@ -34,7 +34,7 @@
 ################################################################################
 
 if [ "${0##*/}" == "${BASH_SOURCE[0]##*/}" ]; then
-	echo "WARNING: $(realpath -s $0) is not meant to be executed directly!" >&2
+	echo "WARNING: $(realpath $0) is not meant to be executed directly!" >&2
 	echo "Use this script only by sourcing it." >&2
 	exit 1
 fi
@@ -83,7 +83,7 @@ function log() {
 
 	local __filelog="${LOG_FILELOG:-false}"
 	local __filelog_dir="${LOG_FILELOG_DIR:-/tmp}"
-	local __filelog_name="${LOG_FILELOG_NAME:-$(realpath -s "${0}" | sed "s,/,%,g")}"
+	local __filelog_name="${LOG_FILELOG_NAME:-$(realpath "${0}" | sed "s,/,%,g")}"
 	local __filelog_path="${__filelog_dir}/${__filelog_name}.log"
 
 	local __syslog="${LOG_SYSLOG:-false}"
